@@ -7,23 +7,36 @@ R2A_MAP = {
     'D': 500,
     'M': 1000,
 }
+R2A_DOUBLES = [
+    'IV', 'IX', 'XL','XC', 'CD', 'CM'
+]
 
-def getArabian(roman_character):
+def get_arabic_factor(roman_character):
     try:
         arabian = R2A_MAP[roman_character];
         return arabian;
     except:
         return None;
 
+def check_if_double_latin_character_case(previous_roman, roman):
+    double = '%s%s' % (previous_roman, roman);
+    isLegalDouble = R2A_DOUBLES.count(double) > 0;
+    return isLegalDouble;
+
 def r2a(roman_number):
     parsed = 0;
     previous_arabian = None;
+    previous_latin = None;
     for character in roman_number:
-        arabian_character = getArabian(character);
-        if (arabian_character == None):
+        arabic_factor = get_arabic_factor(character);
+        if (arabic_factor == None):
             return None;
-        if (previous_arabian != None and previous_arabian < arabian_character):
+        is_double_latin_character_case = check_if_double_latin_character_case(previous_latin, character)
+        if (is_double_latin_character_case == False and previous_arabian != None and previous_arabian < arabic_factor):
+            return None
+        if (is_double_latin_character_case):
             parsed = parsed - 2 * previous_arabian;
-        parsed = parsed + arabian_character;
-        previous_arabian = arabian_character;
+        parsed = parsed + arabic_factor;
+        previous_arabian = arabic_factor;
+        previous_latin = character;
     return parsed;
