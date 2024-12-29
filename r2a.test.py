@@ -1,4 +1,4 @@
-testSuite = [
+test_suite = [
     {
         'description': 'Should return 1, when I given',
         'input': 'I',
@@ -113,19 +113,25 @@ testSuite = [
         'expected': 999,
         'locked': False
     },
+        {
+        'description': 'Should return None, when IM given, as it is not a valid latin number',
+        'input': 'IM',
+        'expected': None,
+        'locked': False
+    },
 ]
 
 from r2a import r2a;
 from testing import hope;
 from testing import test;
 
-for test_item in testSuite:
+for test_item in test_suite:
     description = test_item['description'];
     args = test_item['input'];
     expected = test_item['expected'];
-    def testFunction():
+    def testing_function():
         result = r2a(args);
         outcome = hope(result)['toBe'](expected);
         return outcome;
     if (test_item['locked'] != True):
-        test(description, testFunction);
+        test(description, testing_function);
